@@ -1,9 +1,6 @@
 package org.ogorodnik.network;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 
 class RequestHandler {
     BufferedReader socketReader;
@@ -29,7 +26,7 @@ class RequestHandler {
                 String content = resourceReader.getResource(request.uri, webAppPath);
 
                 responseWriter.writeSuccessResponse(socketWriter, content);
-            } catch (Exception e) {
+            } catch (FileNotFoundException e) {
                 responseWriter.writeNotFoundResponse(socketWriter);
             }
         } catch (IOException exception) {
