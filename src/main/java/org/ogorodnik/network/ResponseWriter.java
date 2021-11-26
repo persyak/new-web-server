@@ -22,15 +22,28 @@ public class ResponseWriter {
         }
     }
 
-    void writeBadRequestResponse(BufferedOutputStream socketWriter){
+    void writeBadRequestResponse(BufferedOutputStream socketWriter) throws IOException {
+        socketWriter.write("HTTP/1.1 200 OK".getBytes());
+        socketWriter.write(LINE_END.getBytes());
+        socketWriter.write(LINE_END.getBytes());
+
+        socketWriter.write("400 BAD Request".getBytes());
+    }
+
+    void writeNotFoundResponse(BufferedOutputStream socketWriter) throws IOException {
+        socketWriter.write("HTTP/1.1 200 OK".getBytes());
+        socketWriter.write(LINE_END.getBytes());
+        socketWriter.write(LINE_END.getBytes());
+
+        socketWriter.write("404 Page was not found".getBytes());
 
     }
 
-    void writeNotFoundResponse(BufferedOutputStream socketWriter){
+    void writeInternalServerErrorResponse(BufferedOutputStream socketWriter) throws IOException {
+        socketWriter.write("HTTP/1.1 200 OK".getBytes());
+        socketWriter.write(LINE_END.getBytes());
+        socketWriter.write(LINE_END.getBytes());
 
-    }
-
-    void writeInternalServerErrorResponse(BufferedOutputStream socketWriter){
-
+        socketWriter.write("500 internal server error".getBytes());
     }
 }

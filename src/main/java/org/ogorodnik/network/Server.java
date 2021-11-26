@@ -24,9 +24,8 @@ public class Server {
                             new RequestHandler(socketReader, socketWriter, webAppPath, responseWriter);
                     try{
                         requestHandler.handle();
-                    } catch (IOException exception) {
+                    } catch (RuntimeException exception) {
                         responseWriter.writeInternalServerErrorResponse(socketWriter);
-                        exception.printStackTrace();
                     }
                 }
             }
