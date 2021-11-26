@@ -1,11 +1,12 @@
 package org.ogorodnik.network;
 
+import java.util.HashMap;
 import java.util.Map;
 
 class Request {
     HttpMethod httpMethod;
     String uri;
-    Map<String, String> headers;
+    Map<String, String> headers = new HashMap<>();
 
     public HttpMethod getHttpMethod() {
         return httpMethod;
