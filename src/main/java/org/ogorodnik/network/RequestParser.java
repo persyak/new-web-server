@@ -28,7 +28,6 @@ class RequestParser {
         String headerLine;
         while(!(headerLine = socketReader.readLine()).equals(REQUEST_END_LINE)){
             String[] headers = headerLine.split(DELIMITER);
-            String headersKey = headers[0];
             StringBuilder headersValue = new StringBuilder(headers[1]);
             if(headers.length>HEADERS_LENGTH_IDENTIFIER){
                 for(int i=2; i<headers.length; i++){
@@ -36,7 +35,7 @@ class RequestParser {
                 }
             }
             String headersValueString = headersValue.toString();
-            request.headers.put(headers[0], headersValueString);
+            request.setHeaders(headers[0], headersValueString);
         }
     }
 

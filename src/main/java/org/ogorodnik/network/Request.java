@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 class Request {
-    HttpMethod httpMethod;
-    String uri;
-    Map<String, String> headers = new HashMap<>();
+    private HttpMethod httpMethod;
+    private String uri;
+    private Map<String, String> headers = new HashMap<>();
 
     public HttpMethod getHttpMethod() {
         return httpMethod;
@@ -16,8 +16,8 @@ class Request {
         return uri;
     }
 
-    public Map<String, String> getHeaders() {
-        return headers;
+    public String getHeaders(String key) {
+        return headers.get(key);
     }
 
     public void setHttpMethod(HttpMethod httpMethod) {
@@ -28,7 +28,7 @@ class Request {
         this.uri = uri;
     }
 
-    public void setHeaders(Map<String, String> headers) {
-        this.headers = headers;
+    public void setHeaders(String key, String value) {
+        headers.put(key, value);
     }
 }

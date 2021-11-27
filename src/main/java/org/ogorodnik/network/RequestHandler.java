@@ -23,7 +23,7 @@ class RequestHandler {
             ResourceReader resourceReader = new ResourceReader();
 
             try {
-                String content = resourceReader.getResource(request.uri, webAppPath);
+                String content = resourceReader.getResource(request.getUri(), webAppPath);
 
                 responseWriter.writeSuccessResponse(socketWriter, content);
             } catch (FileNotFoundException e) {
