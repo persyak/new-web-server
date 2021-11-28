@@ -29,7 +29,7 @@ class RequestHandler {
             } catch (FileNotFoundException e) {
                 responseWriter.writeNotFoundResponse(socketWriter);
             }
-        } catch (IOException exception) {
+        } catch (Exception exception) {
             responseWriter.writeBadRequestResponse(socketWriter);
         }
     }
