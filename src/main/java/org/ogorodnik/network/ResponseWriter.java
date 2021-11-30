@@ -11,7 +11,10 @@ public class ResponseWriter {
     private final static String HTTP_INTERNAL_SERVER_ERROR_RESPONSE = "HTTP/1.1 500 internal server error";
 
     void writeSuccessResponse(BufferedOutputStream socketWriter, String content) throws IOException {
-        try (BufferedInputStream contentInputStream = new BufferedInputStream(new FileInputStream(content))) {
+
+        ContentStreamProvider contentStreamProvider = new ContentStreamProvider(content);
+
+        try (BufferedInputStream contentInputStream = contentStreamProvider.getContentInputStream(content)) {
             socketWriter.write(HTTP_OK_RESPONSE.getBytes());
             socketWriter.write(LINE_END.getBytes());
             socketWriter.write(LINE_END.getBytes());
