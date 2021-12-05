@@ -6,15 +6,13 @@ public class ResponseWriter {
 
     private final static String LINE_END = "\n";
     private final static String HTTP_OK_RESPONSE = "HTTP/1.1 200 OK";
-    private final static String HTTP_BAD_REQUEST_RESPONSE = "HTTP/1.1 400 BAD Request";
-    private final static String HTTP_NOT_FOUND_RESPONSE = "HTTP/1.1 404 Not Found";
-    private final static String HTTP_INTERNAL_SERVER_ERROR_RESPONSE = "HTTP/1.1 500 internal server error";
+    private final static String HTTP_BAD_REQUEST_RESPONSE = "HTTP/1.1 400 BAD_REQUEST";
+    private final static String HTTP_NOT_FOUND_RESPONSE = "HTTP/1.1 404 NOT_FOUND";
+    private final static String HTTP_INTERNAL_SERVER_ERROR_RESPONSE = "HTTP/1.1 500 INTERNAL_SERVER_ERROR";
 
     void writeSuccessResponse(BufferedOutputStream socketWriter, String content) throws IOException {
 
-        ContentStreamProvider contentStreamProvider = new ContentStreamProvider(content);
-
-        try (BufferedInputStream contentInputStream = contentStreamProvider.getContentInputStream(content)) {
+        try (BufferedInputStream contentInputStream = ContentStreamProvider.getContentInputStream(content)) {
             socketWriter.write(HTTP_OK_RESPONSE.getBytes());
             socketWriter.write(LINE_END.getBytes());
             socketWriter.write(LINE_END.getBytes());

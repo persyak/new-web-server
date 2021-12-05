@@ -11,10 +11,8 @@ class ContentStreamProviderTest {
 
     @Test
     void getContentInputStreamTest() throws FileNotFoundException {
-        ContentStreamProvider testCOntentStreamProvider =
-                new ContentStreamProvider("src/test/resources/testSocketFile.txt");
 
         assertInstanceOf(BufferedInputStream.class,
-                testCOntentStreamProvider.getContentInputStream(testCOntentStreamProvider.content));
+                ContentStreamProvider.getContentInputStream("src/test/resources/testSocketFile.txt"));
     }
 }
