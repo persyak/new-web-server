@@ -14,15 +14,15 @@ public class Server {
     }
 
     public void start() throws IOException {
-        try(ServerSocket serverSocket = new ServerSocket(port)){
-            while(true){
-                try(Socket socket = serverSocket.accept();
-                    BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                    BufferedOutputStream socketWriter = new BufferedOutputStream(socket.getOutputStream())){
+        try (ServerSocket serverSocket = new ServerSocket(port)) {
+            while (true) {
+                try (Socket socket = serverSocket.accept();
+                     BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                     BufferedOutputStream socketWriter = new BufferedOutputStream(socket.getOutputStream())) {
                     ResponseWriter responseWriter = new ResponseWriter();
                     RequestHandler requestHandler =
                             new RequestHandler(socketReader, socketWriter, webAppPath, responseWriter);
-                    try{
+                    try {
                         requestHandler.handle();
                     } catch (RuntimeException exception) {
                         responseWriter.writeInternalServerErrorResponse(socketWriter);

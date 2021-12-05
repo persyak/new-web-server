@@ -18,7 +18,7 @@ class RequestParser {
         return request;
     }
 
-    static void urlAndHttpMethod(Request request, String requestLine){
+    static void urlAndHttpMethod(Request request, String requestLine) {
         String[] split = requestLine.split(REQUEST_PARSER);
         request.setHttpMethod(HttpMethod.valueOf(split[0]));
         request.setUri(split[1]);
@@ -26,11 +26,11 @@ class RequestParser {
 
     static void headersMethod(Request request, BufferedReader socketReader) throws IOException {
         String headerLine;
-        while(!(headerLine = socketReader.readLine()).equals(REQUEST_END_LINE)){
+        while (!(headerLine = socketReader.readLine()).equals(REQUEST_END_LINE)) {
             String[] headers = headerLine.split(REQUEST_PARSER);
             StringBuilder headersValue = new StringBuilder(headers[1]);
-            if(headers.length>HEADERS_LENGTH_IDENTIFIER){
-                for(int i=2; i<headers.length; i++){
+            if (headers.length > HEADERS_LENGTH_IDENTIFIER) {
+                for (int i = 2; i < headers.length; i++) {
                     headersValue.append(REQUEST_PARSER).append(headers[i]);
                 }
             }
