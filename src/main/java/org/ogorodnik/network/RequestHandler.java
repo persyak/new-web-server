@@ -1,8 +1,14 @@
 package org.ogorodnik.network;
 
+import org.junit.platform.commons.logging.Logger;
+import org.junit.platform.commons.logging.LoggerFactory;
+
 import java.io.*;
 
 class RequestHandler {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
+
     BufferedReader socketReader;
     BufferedOutputStream socketWriter;
     String webAppPath;
@@ -16,9 +22,8 @@ class RequestHandler {
     }
 
     void handle() throws IOException {
-        RequestParser requestParser = new RequestParser();
         try {
-            Request request = requestParser.parseRequest(socketReader);
+            Request request = RequestParser.parseRequest(socketReader);
 
             ResourceReader resourceReader = new ResourceReader();
 
