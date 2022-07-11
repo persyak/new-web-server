@@ -2,7 +2,7 @@ package org.ogorodnik.network;
 
 import java.io.*;
 
-public class ResponseWriter {
+class ResponseWriter {
 
     private final static String LINE_END = "\n";
     private final static String HTTP_OK_RESPONSE = "HTTP/1.1 200 OK";

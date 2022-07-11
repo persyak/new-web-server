@@ -1,41 +1,51 @@
 package org.ogorodnik.network;
 
-import org.junit.platform.commons.logging.Logger;
-import org.junit.platform.commons.logging.LoggerFactory;
-
 import java.io.*;
+import java.net.Socket;
 
-class RequestHandler {
+class RequestHandler implements Runnable {
 
-    private static final Logger LOG = LoggerFactory.getLogger(RequestHandler.class);
-
-    BufferedReader socketReader;
-    BufferedOutputStream socketWriter;
+    Socket socket;
     String webAppPath;
-    ResponseWriter responseWriter;
 
-    public RequestHandler(BufferedReader socketReader, BufferedOutputStream socketWriter, String webAppPath, ResponseWriter responseWriter) {
-        this.socketReader = socketReader;
-        this.socketWriter = socketWriter;
+    public RequestHandler(Socket socket, String webAppPath) {
+        this.socket = socket;
         this.webAppPath = webAppPath;
-        this.responseWriter = responseWriter;
     }
 
-    void handle() throws IOException {
-        try {
-            Request request = RequestParser.parseRequest(socketReader);
-
-            ResourceReader resourceReader = new ResourceReader();
-
+    private void handle() throws IOException {
+        try (
+                BufferedReader socketReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedOutputStream socketWriter = new BufferedOutputStream(socket.getOutputStream())) {
+            ResponseWriter responseWriter = new ResponseWriter();
             try {
-                String content = resourceReader.getResource(request.getUri(), webAppPath);
+                try {
+                    Request request = RequestParser.parseRequest(socketReader);
+                    ResourceReader resourceReader = new ResourceReader();
 
-                responseWriter.writeSuccessResponse(socketWriter, content);
-            } catch (FileNotFoundException e) {
-                responseWriter.writeNotFoundResponse(socketWriter);
+                    try {
+                        String content = resourceReader.getResource(request.getUri(), webAppPath);
+
+                        responseWriter.writeSuccessResponse(socketWriter, content);
+                    } catch (FileNotFoundException e) {
+                        responseWriter.writeNotFoundResponse(socketWriter);
+                    }
+                } catch (Exception exception) {
+                    responseWriter.writeBadRequestResponse(socketWriter);
+                }
+            } catch (RuntimeException exception) {
+                responseWriter.writeInternalServerErrorResponse(socketWriter);
             }
-        } catch (Exception exception) {
-            responseWriter.writeBadRequestResponse(socketWriter);
+        }
+        socket.close();
+    }
+
+    @Override
+    public void run() {
+        try {
+            handle();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
